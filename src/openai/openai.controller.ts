@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -33,6 +34,19 @@ export class OpenaiController {
     } catch (error) {
       console.error('Error en el análisis de imágenes:', error);
       throw error;
+    }
+  }
+
+  @Get('last-analysis')
+  getLastAnalysis() {
+    const lastResult = this.openaiService.getLastAnalysisResult();
+    if (lastResult) {
+      return {
+        message: 'Último análisis recuperado con éxito.',
+        data: lastResult,
+      };
+    } else {
+      return { message: 'No se encontró ningún análisis reciente.' };
     }
   }
 }
